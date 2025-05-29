@@ -1,162 +1,202 @@
 [
   {
+    "src": "1.mp4",
+    "name": "Captain Ray",
+    "info": [
+      "Performance: 95",
+      "Creative: 85",
+      "Action: 90",
+      "Style: 88"
+    ]
+  },
+  {
+    "src": "2.mp4",
+    "name": "Nova Strike",
+    "info": [
+      "Performance: 88",
+      "Creative: 92",
+      "Action: 85",
+      "Style: 90"
+    ]
+  },
+  {
+    "src": "3.mp4",
+    "name": "Quantum Blade",
+    "info": [
+      "Performance: 92",
+      "Creative: 78",
+      "Action: 95",
+      "Style: 82"
+    ]
+  },
+  {
+    "src": "4.mp4",
+    "name": "Phoenix Fire",
+    "info": [
+      "Performance: 90",
+      "Creative: 88",
+      "Action: 87",
+      "Style: 94"
+    ]
+  },
+  {
+    "src": "5.mp4",
+    "name": "Storm Wing",
+    "info": [
+      "Performance: 87",
+      "Creative: 90",
+      "Action: 89",
+      "Style: 85"
+    ]
+  },
+  {
+    "src": "6.mp4",
+    "name": "Shadow Hunter",
+    "info": [
+      "Performance: 93",
+      "Creative: 82",
+      "Action: 91",
+      "Style: 89"
+    ]
+  },
+  {
+    "src": "7.mp4",
+    "name": "Cosmic Guardian",
+    "info": [
+      "Performance: 89",
+      "Creative: 94",
+      "Action: 86",
+      "Style: 92"
+    ]
+  },
+  {
+    "src": "8.mp4",
+    "name": "Steel Titan",
+    "info": [
+      "Performance: 91",
+      "Creative: 80",
+      "Action: 94",
+      "Style: 87"
+    ]
+  },
+  {
+    "src": "1-1.mp4",
+    "name": "Alpha Prime",
+    "info": [
+      "Performance: 96",
+      "Creative: 89",
+      "Action: 93",
+      "Style: 91"
+    ]
+  },
+  {
+    "src": "1-2.mp4",
+    "name": "Beta Force",
+    "info": [
+      "Performance: 84",
+      "Creative: 91",
+      "Action: 88",
+      "Style: 86"
+    ]
+  },
+  {
+    "src": "1-3.mp4",
+    "name": "Gamma Rush",
+    "info": [
+      "Performance: 88",
+      "Creative: 85",
+      "Action: 90",
+      "Style: 89"
+    ]
+  },
+  {
+    "src": "1-4.mp4",
+    "name": "Delta Strike",
+    "info": [
+      "Performance: 90",
+      "Creative: 87",
+      "Action: 92",
+      "Style: 88"
+    ]
+  },
+  {
+    "src": "2-1.mp4",
+    "name": "Omega Blast",
+    "info": [
+      "Performance: 92",
+      "Creative: 88",
+      "Action: 89",
+      "Style: 93"
+    ]
+  },
+  {
+    "src": "2-2.mp4",
+    "name": "Vortex Rider",
+    "info": [
+      "Performance: 85",
+      "Creative: 93",
+      "Action: 87",
+      "Style: 90"
+    ]
+  },
+  {
+    "src": "2-3.mp4",
+    "name": "Thunder Bolt",
+    "info": [
+      "Performance: 89",
+      "Creative: 86",
+      "Action: 94",
+      "Style: 88"
+    ]
+  },
+  {
+    "src": "2-4.mp4",
+    "name": "Lightning Flash",
+    "info": [
+      "Performance: 91",
+      "Creative: 89",
+      "Action: 85",
+      "Style: 92"
+    ]
+  },
+  {
+    "src": "Firefly flying thought the sky 464825.mp4",
+    "name": "Sky Firefly",
+    "info": [
+      "Performance: 94",
+      "Creative: 96",
+      "Action: 88",
+      "Style: 95"
+    ]
+  },
+  {
     "src": "Firefly add movement and laser fires out from the light in the chest 464825.mp4",
-    "name": "Captain Ray",
+    "name": "Laser Firefly",
     "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
+      "Performance: 97",
+      "Creative: 92",
+      "Action: 96",
+      "Style: 90"
     ]
   },
   {
-    "src": "./Firefly flying thought the sky 464825.mp4",
-    "name": "Captain Ray",
+    "src": "replicate-prediction-wbxm71vga5rmc0cp3amt2hejyr.mp4",
+    "name": "Neural Net Alpha",
     "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
+      "Performance: 86",
+      "Creative: 94",
+      "Action: 89",
+      "Style: 87"
     ]
   },
   {
-    "src": "./replicate-prediction-emdwjxt44drme0cp3anrqcqhyr.mp4",
-    "name": "Captain Ray",
+    "src": "replicate-prediction-emdwjxt44drme0cp3anrqcqhyr copy.mp4",
+    "name": "Neural Net Beta",
     "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./Firefly flying thought the sky 464825.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./Firefly flying thought the sky 464825.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./replicate-prediction-emdwjxt44drme0cp3anrqcqhyr.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./Firefly flying thought the sky 464825.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./replicate-prediction-wbxm71vga5rmc0cp3amt2hejyr.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./Firefly flying thought the sky 464825.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./replicate-prediction-emdwjxt44drme0cp3anrqcqhyr.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./replicate-prediction-wbxm71vga5rmc0cp3amt2hejyr.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./Firefly flying thought the sky 464825.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./Firefly add movement and laser fires out from the light in the chest 464825.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./replicate-prediction-wbxm71vga5rmc0cp3amt2hejyr.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./replicate-prediction-emdwjxt44drme0cp3anrqcqhyr.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
-    ]
-  },
-  {
-    "src": "./Firefly add movement and laser fires out from the light in the chest 464825.mp4",
-    "name": "Captain Ray",
-    "info": [
-      "Performance: 90",
-      "Creative: 60",
-      "Value 2: 30",
-      "Hair Style: 20"
+      "Performance: 88",
+      "Creative: 91",
+      "Action: 87",
+      "Style: 89"
     ]
   }
 ]
