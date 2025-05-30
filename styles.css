@@ -52,7 +52,8 @@ html, body {
 .overlay-content {
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   padding: 40px 30px;
-  max-width: 660px;
+  max-width: 80%;
+  height: 1000px;
   width: 100%;
   text-align: center;
   border-radius: 25px;
@@ -64,12 +65,23 @@ html, body {
 
 .overlay-content video {
   width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+}
+
+.overlay-content img {
+  width: 100%;
   max-width: 560px;
   height: auto;
   border-radius: 15px;
   margin-bottom: 25px;
   border: 3px solid rgba(255, 255, 255, 0.8);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
 }
 
 .overlay-content .name {
@@ -138,3 +150,20 @@ html, body {
   background: rgba(255, 255, 255, 0.2);
   transform: scale(1.1);
 } 
+
+.overlay-card {
+  position: absolute;
+  bottom: -100px;
+  right: -100px;
+  width: 300px;
+  height: auto;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

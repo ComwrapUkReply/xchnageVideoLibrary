@@ -2,6 +2,7 @@
   {
     "src": "1.mp4",
     "name": "Captain Ray",
+    "cardImage": "https://cdn.imagineapi.dev/assets/56c185f9-f718-4581-9c18-949611b65d19/0cf34b5d-6386-42ea-8bba-53a9cf6e4b0d.png",
     "info": [
       "Performance: 95",
       "Creative: 85",
@@ -12,6 +13,7 @@
   {
     "src": "2.mp4",
     "name": "Nova Strike",
+    "cardImage": "https://cdn.imagineapi.dev/assets/8fb56d9c-54c1-4cd6-a0c3-a987da434351/eececde7-6984-482c-a2bf-abebc95fe0a7.png",
     "info": [
       "Performance: 88",
       "Creative: 92",
@@ -22,6 +24,7 @@
   {
     "src": "3.mp4",
     "name": "Quantum Blade",
+    "cardImage": "https://cdn.imagineapi.dev/assets/fcff6d0c-f0a9-47f1-9948-81f6d05b5978/c9c70416-825a-479d-9237-0235af76db89.png",
     "info": [
       "Performance: 92",
       "Creative: 78",
@@ -32,6 +35,7 @@
   {
     "src": "4.mp4",
     "name": "Phoenix Fire",
+    "cardImage": "https://cdn.imagineapi.dev/assets/e89c271d-6b9b-4aa8-9502-5bed07b652f0/aa34c4cd-35a1-4fcf-b2c6-f750c9241170.png",
     "info": [
       "Performance: 90",
       "Creative: 88",
@@ -42,6 +46,7 @@
   {
     "src": "5.mp4",
     "name": "Storm Wing",
+    "cardImage": "https://cdn.imagineapi.dev/assets/56c185f9-f718-4581-9c18-949611b65d19/0cf34b5d-6386-42ea-8bba-53a9cf6e4b0d.png",
     "info": [
       "Performance: 87",
       "Creative: 90",
@@ -52,6 +57,7 @@
   {
     "src": "6.mp4",
     "name": "Shadow Hunter",
+    "cardImage": "https://cdn.imagineapi.dev/assets/8fb56d9c-54c1-4cd6-a0c3-a987da434351/eececde7-6984-482c-a2bf-abebc95fe0a7.png",
     "info": [
       "Performance: 93",
       "Creative: 82",
@@ -62,6 +68,7 @@
   {
     "src": "7.mp4",
     "name": "Cosmic Guardian",
+    "cardImage": "https://cdn.imagineapi.dev/assets/fcff6d0c-f0a9-47f1-9948-81f6d05b5978/c9c70416-825a-479d-9237-0235af76db89.png",
     "info": [
       "Performance: 89",
       "Creative: 94",
@@ -72,6 +79,7 @@
   {
     "src": "8.mp4",
     "name": "Steel Titan",
+    "cardImage": "https://cdn.imagineapi.dev/assets/e89c271d-6b9b-4aa8-9502-5bed07b652f0/aa34c4cd-35a1-4fcf-b2c6-f750c9241170.png",
     "info": [
       "Performance: 91",
       "Creative: 80",
@@ -82,6 +90,7 @@
   {
     "src": "1-1.mp4",
     "name": "Alpha Prime",
+    "cardImage": "https://cdn.imagineapi.dev/assets/56c185f9-f718-4581-9c18-949611b65d19/0cf34b5d-6386-42ea-8bba-53a9cf6e4b0d.png",
     "info": [
       "Performance: 96",
       "Creative: 89",
@@ -92,6 +101,7 @@
   {
     "src": "1-2.mp4",
     "name": "Beta Force",
+    "cardImage": "https://cdn.imagineapi.dev/assets/8fb56d9c-54c1-4cd6-a0c3-a987da434351/eececde7-6984-482c-a2bf-abebc95fe0a7.png",
     "info": [
       "Performance: 84",
       "Creative: 91",
@@ -102,6 +112,7 @@
   {
     "src": "1-3.mp4",
     "name": "Gamma Rush",
+    "cardImage": "https://cdn.imagineapi.dev/assets/fcff6d0c-f0a9-47f1-9948-81f6d05b5978/c9c70416-825a-479d-9237-0235af76db89.png",
     "info": [
       "Performance: 88",
       "Creative: 85",
@@ -112,6 +123,7 @@
   {
     "src": "1-4.mp4",
     "name": "Delta Strike",
+    "cardImage": "https://cdn.imagineapi.dev/assets/e89c271d-6b9b-4aa8-9502-5bed07b652f0/aa34c4cd-35a1-4fcf-b2c6-f750c9241170.png",
     "info": [
       "Performance: 90",
       "Creative: 87",
@@ -122,6 +134,7 @@
   {
     "src": "2-1.mp4",
     "name": "Omega Blast",
+    "cardImage": "https://cdn.imagineapi.dev/assets/56c185f9-f718-4581-9c18-949611b65d19/0cf34b5d-6386-42ea-8bba-53a9cf6e4b0d.png",
     "info": [
       "Performance: 92",
       "Creative: 88",
@@ -132,6 +145,7 @@
   {
     "src": "2-2.mp4",
     "name": "Vortex Rider",
+    "cardImage": "https://cdn.imagineapi.dev/assets/8fb56d9c-54c1-4cd6-a0c3-a987da434351/eececde7-6984-482c-a2bf-abebc95fe0a7.png",
     "info": [
       "Performance: 85",
       "Creative: 93",
@@ -142,6 +156,7 @@
   {
     "src": "2-3.mp4",
     "name": "Thunder Bolt",
+    "cardImage": "https://cdn.imagineapi.dev/assets/fcff6d0c-f0a9-47f1-9948-81f6d05b5978/c9c70416-825a-479d-9237-0235af76db89.png",
     "info": [
       "Performance: 89",
       "Creative: 86",
@@ -152,6 +167,7 @@
   {
     "src": "2-4.mp4",
     "name": "Lightning Flash",
+    "cardImage": "https://cdn.imagineapi.dev/assets/e89c271d-6b9b-4aa8-9502-5bed07b652f0/aa34c4cd-35a1-4fcf-b2c6-f750c9241170.png",
     "info": [
       "Performance: 91",
       "Creative: 89",
@@ -162,6 +178,7 @@
   {
     "src": "Firefly flying thought the sky 464825.mp4",
     "name": "Sky Firefly",
+    "cardImage": "https://cdn.imagineapi.dev/assets/56c185f9-f718-4581-9c18-949611b65d19/0cf34b5d-6386-42ea-8bba-53a9cf6e4b0d.png",
     "info": [
       "Performance: 94",
       "Creative: 96",
@@ -172,6 +189,7 @@
   {
     "src": "Firefly add movement and laser fires out from the light in the chest 464825.mp4",
     "name": "Laser Firefly",
+    "cardImage": "https://cdn.imagineapi.dev/assets/8fb56d9c-54c1-4cd6-a0c3-a987da434351/eececde7-6984-482c-a2bf-abebc95fe0a7.png",
     "info": [
       "Performance: 97",
       "Creative: 92",
@@ -182,6 +200,7 @@
   {
     "src": "replicate-prediction-wbxm71vga5rmc0cp3amt2hejyr.mp4",
     "name": "Neural Net Alpha",
+    "cardImage": "https://cdn.imagineapi.dev/assets/fcff6d0c-f0a9-47f1-9948-81f6d05b5978/c9c70416-825a-479d-9237-0235af76db89.png",
     "info": [
       "Performance: 86",
       "Creative: 94",
@@ -192,6 +211,7 @@
   {
     "src": "replicate-prediction-emdwjxt44drme0cp3anrqcqhyr copy.mp4",
     "name": "Neural Net Beta",
+    "cardImage": "https://cdn.imagineapi.dev/assets/e89c271d-6b9b-4aa8-9502-5bed07b652f0/aa34c4cd-35a1-4fcf-b2c6-f750c9241170.png",
     "info": [
       "Performance: 88",
       "Creative: 91",

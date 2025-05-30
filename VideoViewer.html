@@ -13,8 +13,11 @@
     <div class="close-btn" onclick="closeOverlay()">&times;</div>
     <div class="overlay-content">
       <video id="overlayVideo" controls></video>
-      <div class="name" id="overlayName">Name Surname</div>
-      <div class="info" id="overlayInfo"></div>
+      <div class="overlay-card">
+        <img id="overlayImage" src="" alt="Character Card">
+        <div class="name" id="overlayName">Name Surname</div>
+        <div class="info" id="overlayInfo"></div>
+      </div>
     </div>
   </div>
 
@@ -23,6 +26,7 @@
       const gallery = document.getElementById('gallery');
       const overlay = document.getElementById('overlay');
       const overlayVideo = document.getElementById('overlayVideo');
+      const overlayImage = document.getElementById('overlayImage');
       const overlayInfo = document.getElementById('overlayInfo');
       const overlayName = document.getElementById('overlayName');
 
@@ -45,6 +49,8 @@
 
       function openOverlay(video) {
         overlayVideo.src = video.src;
+        overlayImage.src = video.cardImage || '';
+        overlayImage.alt = video.name || 'Character Card';
         overlayName.textContent = video.name || 'Name Surname';
         overlayInfo.innerHTML = video.info.map(p => {
           const [label, value] = p.split(':');
