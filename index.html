@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Video Gallery</title>
+  <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+  <div class="gallery" id="gallery"></div>
+  
+  <!-- Load More Button -->
+  <div id="loadMoreContainer" class="loadMoreContainer">
+    <button id="loadMoreBtn" onclick="loadMoreVideos()">
+      ▼
+    </button>
+  </div>
+  
+  <div class="overlay" id="overlay">
+    <div class="close-btn" onclick="closeOverlay()">&times;</div>
+    <div class="overlay-content">
+      <video id="overlayVideo" controls></video>
+      <div class="overlay-card">
+        <img id="overlayImage" src="" alt="Character Card">
+        <div class="name" id="overlayName">Name Surname</div>
+        <div class="info" id="overlayInfo"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const gallery = document.getElementById('gallery');
+      const overlay = document.getElementById('overlay');
+      const overlayVideo = document.getElementById('overlayVideo');
+      const overlayImage = document.getElementById('overlayImage');
+      const overlayInfo = document.getElementById('overlayInfo');
+      const overlayName = document.getElementById('overlayName');
+
+      let allVideos = [];
+      let currentlyLoaded = 0;
+      const initialLoad = 16;
+      const loadMore = 16;
+      let isLoading = false;
+
+      // Utility function to get human-readable time ago with hours and minutes
+      function getTimeAgo(date) {
+        const now = new Date();
+        const diffMs = now - date;
+        const diffSecs = Math.floor(diffMs / 1000);
+        const diffMins = Math.floor(diffSecs / 60);
+        const diffHours = Math.floor(diffMins / 60);
+        const diffDays = Math.floor(diffHours / 24);
+
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins}m ago`;
+        if (diffHours < 24) return `${diffHours}h ${diffMins % 60}m ago`;
+        if (diffDays < 7) return `${diffDays}d ${diffHours % 24}h ago`;
+        
+        // For older videos, show the actual date and time
+        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      }
+
+      let lastUpdateTime = null;
+
+      // Check for updates to videos.json
+      function checkForUpdates() {
+        fetch('./videos-updated.signal?' + Date.now())
+          .then(response => response.text())
+          .then(updateTime => {
+            if (lastUpdateTime && updateTime !== lastUpdateTime) {
+              console.log('🔄 Videos updated detected, refreshing...');
+              reloadVideos();
+            }
+            lastUpdateTime = updateTime;
+          })
+          .catch(error => {
+            // Signal file doesn't exist yet, that's okay
+          });
+      }
+
+      // Reload videos from JSON
+      function reloadVideos() {
+        fetch('videos.json?' + Date.now()) // Cache busting
+          .then(response => response.json())
+          .then(videos => {
+            console.log(`🔄 Reloaded ${videos.length} videos from JSON`);
+            
+            // Sort videos by timestamp (newest first)
+            allVideos = videos.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            // Clear gallery and reset counters
+            gallery.innerHTML = '';
+            currentlyLoaded = 0;
+            
+            // Load initial videos
+            loadVideos(initialLoad);
+            updateLoadMoreButton();
+            
+            console.log(`✅ Gallery refreshed with ${currentlyLoaded} videos`);
+          })
+          .catch(error => console.error('Failed to reload videos:', error));
+      }
+
+      // Start periodic update checking
+      setInterval(checkForUpdates, 2000); // Check every 2 seconds
+
+      fetch('videos.json')
+        .then(response => response.json())
+        .then(videos => {
+          console.log(`Loaded ${videos.length} videos from JSON`);
+          
+          // Sort videos by timestamp (newest first)
+          allVideos = videos.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+          console.log(`Sorted videos by timestamp. Newest: ${allVideos[0].name} (${allVideos[0].timestamp})`);
+          console.log(`Oldest: ${allVideos[allVideos.length - 1].name} (${allVideos[allVideos.length - 1].timestamp})`);
+          
+          loadVideos(initialLoad);
+          updateLoadMoreButton();
+        })
+        .catch(error => console.error('Failed to load JSON:', error));
+
+      function loadVideos(count) {
+        console.log(`Loading ${count} videos, currently have ${currentlyLoaded}`);
+        const videosToLoad = allVideos.slice(currentlyLoaded, currentlyLoaded + count);
+        const totalToShow = Math.min(currentlyLoaded + count, allVideos.length);
+        
+        console.log(`Videos to load: ${videosToLoad.length}, total to show: ${totalToShow}`);
+        console.log('Video sources being loaded:', videosToLoad.map(v => v.src));
+        
+        videosToLoad.forEach((video, index) => {
+          const tile = document.createElement('div');
+          
+          // Format timestamp for display
+          const date = new Date(video.timestamp);
+          const timeAgo = getTimeAgo(date);
+          
+          tile.innerHTML = `
+            <video src="${video.src}" autoplay muted loop></video>
+            <div class="timestamp-overlay">${timeAgo}</div>
+            <div class="video-title">${video.name}</div>
+          `;
+          tile.onclick = () => openOverlay(video);
+          gallery.appendChild(tile);
+          console.log(`Added video ${currentlyLoaded + index + 1}: ${video.name} (${video.src}) - ${timeAgo}`);
+        });
+
+        currentlyLoaded = totalToShow;
+        console.log(`Finished loading. Current total: ${currentlyLoaded}/${allVideos.length} videos`);
+        
+        // Debug: Count actual DOM elements
+        const actualVideoElements = gallery.querySelectorAll('div').length;
+        console.log(`DOM elements in gallery: ${actualVideoElements}`);
+        
+        updateLoadMoreButton();
+      }
+
+      function updateLoadMoreButton() {
+        const loadMoreContainer = document.getElementById('loadMoreContainer');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        
+        if (currentlyLoaded >= allVideos.length) {
+          // All videos loaded - hide the button
+          loadMoreContainer.style.display = 'none';
+          console.log('All videos loaded - hiding Load More button');
+        } else {
+          // More videos available - show the button with count
+          loadMoreContainer.style.display = 'flex';
+          const remaining = allVideos.length - currentlyLoaded;
+          const nextLoad = Math.min(loadMore, remaining);
+          loadMoreBtn.textContent = `Load ${nextLoad} More Videos (${remaining} remaining)`;
+          console.log(`Button updated: ${nextLoad} more videos, ${remaining} remaining`);
+        }
+      }
+
+      window.loadMoreVideos = function() {
+        if (!isLoading && currentlyLoaded < allVideos.length) {
+          console.log('Button clicked - loading more videos...');
+          isLoading = true;
+          
+          // Store the current scroll position and video count
+          const previousCount = currentlyLoaded;
+          const currentScrollTop = window.pageYOffset;
+          
+          // Add loading state to button
+          const loadMoreBtn = document.getElementById('loadMoreBtn');
+          const originalText = loadMoreBtn.textContent;
+          loadMoreBtn.textContent = '...';
+          loadMoreBtn.disabled = true;
+          loadMoreBtn.style.opacity = '0.6';
+          
+          // Load new videos
+          loadVideos(loadMore);
+          
+          // Reset button state and perform auto-scroll
+          setTimeout(() => {
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.style.opacity = '1';
+            loadMoreBtn.textContent = originalText;
+            isLoading = false;
+            
+            console.log('Starting auto-scroll...');
+            
+            // Simple and reliable: scroll to bottom of page
+            const documentHeight = Math.max(
+              document.body.scrollHeight,
+              document.body.offsetHeight,
+              document.documentElement.clientHeight,
+              document.documentElement.scrollHeight,
+              document.documentElement.offsetHeight
+            );
+            
+            const windowHeight = window.innerHeight;
+            const maxScrollTop = documentHeight - windowHeight;
+            
+            console.log(`Document height: ${documentHeight}px`);
+            console.log(`Window height: ${windowHeight}px`);
+            console.log(`Max scroll position: ${maxScrollTop}px`);
+            console.log(`Current scroll position: ${window.pageYOffset}px`);
+            
+            // Scroll to near bottom with smooth animation (leave a little space)
+            const targetPosition = Math.max(0, maxScrollTop - 100);
+            console.log(`Scrolling to: ${targetPosition}px`);
+            
+            // Smooth animated scroll
+            window.scrollTo({
+              top: targetPosition,
+              left: 0,
+              behavior: 'smooth'
+            });
+            
+            // Monitor scroll progress for feedback
+            let scrollCheckCount = 0;
+            const scrollMonitor = setInterval(() => {
+              const currentPos = window.pageYOffset;
+              console.log(`Scroll progress: ${currentPos}px (target: ${targetPosition}px)`);
+              
+              scrollCheckCount++;
+              if (Math.abs(currentPos - targetPosition) < 10 || scrollCheckCount > 20) {
+                clearInterval(scrollMonitor);
+                console.log(`Smooth scroll animation completed at position: ${currentPos}px`);
+              }
+            }, 100);
+            
+            console.log(`Auto-scroll completed. Previous videos: ${previousCount}, Current videos: ${currentlyLoaded}`);
+            
+          }, 800); // Longer timeout to ensure DOM is fully rendered
+        } else {
+          console.log('Cannot load more - isLoading:', isLoading, 'currentlyLoaded:', currentlyLoaded, 'total:', allVideos.length);
+        }
+      };
+
+      function scrollToNewContent(previousCount) {
+        // This function is no longer needed since we're doing direct scrolling
+        console.log('scrollToNewContent called but using direct approach instead');
+      }
+
+      function openOverlay(video) {
+        overlayVideo.src = video.src;
+        overlayImage.src = video.cardImage || '';
+        overlayImage.alt = video.name || 'Character Card';
+        overlayName.textContent = video.name || 'Name Surname';
+        
+        // Parse info and create initial structure with 0 values
+        const infoData = video.info.map(p => {
+          const [label, value] = p.split(':');
+          return {
+            label: label.trim(),
+            value: parseInt(value.trim()) || 0
+          };
+        });
+        
+        // Set initial HTML with 0 values
+        overlayInfo.innerHTML = infoData.map((item, index) => {
+          return `<p><span class="progress-bar" data-index="${index}"></span><span>${item.label}</span><span class="animated-value" data-target="${item.value}" data-index="${index}">0</span></p>`;
+        }).join('');
+        
+        overlay.classList.add('active');
+        
+        // Auto-play the video with error handling
+        setTimeout(() => {
+          overlayVideo.play().catch(error => {
+            console.log('Autoplay prevented by browser policy:', error);
+            // Optionally show a play button or notification to user
+          });
+        }, 100);
+        
+        // Start counting animation after a small delay
+        setTimeout(() => {
+          animateValues();
+        }, 300);
+      }
+
+      function animateValues() {
+        const animatedElements = document.querySelectorAll('.animated-value');
+        const progressBars = document.querySelectorAll('.progress-bar');
+        
+        animatedElements.forEach((element, index) => {
+          const targetValue = parseInt(element.getAttribute('data-target'));
+          const progressBar = progressBars[index];
+          const duration = 1500 + (index * 200); // Staggered duration
+          const startDelay = index * 150; // Staggered start delay
+          
+          setTimeout(() => {
+            const increment = targetValue / (duration / 16); // 60fps
+            let currentValue = 0;
+            
+            const timer = setInterval(() => {
+              currentValue += increment;
+              const progress = Math.min(currentValue / targetValue, 1) * 100;
+              
+              if (currentValue >= targetValue) {
+                currentValue = targetValue;
+                clearInterval(timer);
+                
+                // Add a pulse effect when reaching the target
+                element.style.transform = 'scale(1.15)';
+                element.style.color = '#FFD700';
+                progressBar.style.width = '100%';
+                progressBar.style.boxShadow = '0 0 10px #FFD700';
+                
+                setTimeout(() => {
+                  element.style.transform = 'scale(1)';
+                  progressBar.style.boxShadow = 'none';
+                }, 300);
+              }
+              
+              element.textContent = Math.floor(currentValue);
+              progressBar.style.width = `${progress}%`;
+            }, 16);
+          }, startDelay);
+        });
+      }
+
+      window.closeOverlay = function () {
+        overlay.classList.remove('active');
+        overlayVideo.pause();
+        overlayVideo.currentTime = 0; // Reset video to beginning
+      };
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "video-gallery-watcher",
+  "version": "1.0.0",
+  "description": "Auto-updating video gallery with file watcher",
+  "main": "video-watcher.js",
+  "scripts": {
+    "start": "node video-watcher.js",
+    "serve": "python3 -m http.server 8080"
+  },
+  "dependencies": {
+    "chokidar": "^3.5.3"
+  },
+  "keywords": ["video", "gallery", "watcher", "auto-update"],
+  "author": "Szymon",
+  "license": "MIT"
+} 
