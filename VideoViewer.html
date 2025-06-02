@@ -63,31 +63,47 @@
 
       let lastUpdateTime = null;
 
-      // Check for updates to videos.json
+      // Check for updates to viedo-library.json
       function checkForUpdates() {
         fetch('./videos-updated.signal?' + Date.now())
-          .then(response => response.text())
-          .then(updateTime => {
-            if (lastUpdateTime && updateTime !== lastUpdateTime) {
-              console.log('🔄 Videos updated detected, refreshing...');
-              reloadVideos();
+          .then(response => {
+            if (response.ok) {
+              return response.text();
             }
-            lastUpdateTime = updateTime;
+            throw new Error('Signal file not found');
+          })
+          .then(updateTime => {
+            console.log(`📡 Signal check: ${updateTime.trim()}`);
+            if (lastUpdateTime && updateTime.trim() !== lastUpdateTime.trim()) {
+              console.log('🔄 Videos updated detected, refreshing...');
+              lastUpdateTime = updateTime.trim();
+              reloadVideos();
+            } else if (!lastUpdateTime) {
+              lastUpdateTime = updateTime.trim();
+              console.log('📡 Initial signal time set:', lastUpdateTime);
+            }
           })
           .catch(error => {
             // Signal file doesn't exist yet, that's okay
+            console.log('📡 No signal file yet (normal on first run)');
           });
       }
 
       // Reload videos from JSON
       function reloadVideos() {
-        fetch('videos.json?' + Date.now()) // Cache busting
-          .then(response => response.json())
+        console.log('🔄 Reloading videos from viedo-library.json...');
+        fetch('viedo-library.json?' + Date.now()) // Cache busting
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
           .then(videos => {
             console.log(`🔄 Reloaded ${videos.length} videos from JSON`);
             
-            // Sort videos by timestamp (newest first)
-            allVideos = videos.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            // Sort videos by timestamp (newest first) - convert Unix timestamp to Date
+            allVideos = videos.sort((a, b) => parseInt(b.date) - parseInt(a.date));
             
             // Clear gallery and reset counters
             gallery.innerHTML = '';
@@ -99,21 +115,29 @@
             
             console.log(`✅ Gallery refreshed with ${currentlyLoaded} videos`);
           })
-          .catch(error => console.error('Failed to reload videos:', error));
+          .catch(error => {
+            console.error('❌ Failed to reload videos:', error);
+            // Try again in 5 seconds
+            setTimeout(() => {
+              console.log('🔄 Retrying video reload...');
+              reloadVideos();
+            }, 5000);
+          });
       }
 
-      // Start periodic update checking
-      setInterval(checkForUpdates, 2000); // Check every 2 seconds
+      // Start periodic update checking with more frequent checks
+      console.log('📡 Starting update checker...');
+      setInterval(checkForUpdates, 1000); // Check every 1 second for faster updates
 
-      fetch('videos.json')
+      fetch('viedo-library.json')
         .then(response => response.json())
         .then(videos => {
           console.log(`Loaded ${videos.length} videos from JSON`);
           
-          // Sort videos by timestamp (newest first)
-          allVideos = videos.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-          console.log(`Sorted videos by timestamp. Newest: ${allVideos[0].name} (${allVideos[0].timestamp})`);
-          console.log(`Oldest: ${allVideos[allVideos.length - 1].name} (${allVideos[allVideos.length - 1].timestamp})`);
+          // Sort videos by timestamp (newest first) - convert Unix timestamp to Date
+          allVideos = videos.sort((a, b) => parseInt(b.date) - parseInt(a.date));
+          console.log(`Sorted videos by timestamp. Newest: ${allVideos[0].name} (${allVideos[0].date})`);
+          console.log(`Oldest: ${allVideos[allVideos.length - 1].name} (${allVideos[allVideos.length - 1].date})`);
           
           loadVideos(initialLoad);
           updateLoadMoreButton();
@@ -126,23 +150,23 @@
         const totalToShow = Math.min(currentlyLoaded + count, allVideos.length);
         
         console.log(`Videos to load: ${videosToLoad.length}, total to show: ${totalToShow}`);
-        console.log('Video sources being loaded:', videosToLoad.map(v => v.src));
+        console.log('Video sources being loaded:', videosToLoad.map(v => v.movie));
         
         videosToLoad.forEach((video, index) => {
           const tile = document.createElement('div');
           
-          // Format timestamp for display
-          const date = new Date(video.timestamp);
+          // Format timestamp for display - convert Unix timestamp to Date
+          const date = new Date(parseInt(video.date) * 1000);
           const timeAgo = getTimeAgo(date);
           
           tile.innerHTML = `
-            <video src="${video.src}" autoplay muted loop></video>
+            <video src="${video.movie}" autoplay muted loop></video>
             <div class="timestamp-overlay">${timeAgo}</div>
             <div class="video-title">${video.name}</div>
           `;
           tile.onclick = () => openOverlay(video);
           gallery.appendChild(tile);
-          console.log(`Added video ${currentlyLoaded + index + 1}: ${video.name} (${video.src}) - ${timeAgo}`);
+          console.log(`Added video ${currentlyLoaded + index + 1}: ${video.name} (${video.movie}) - ${timeAgo}`);
         });
 
         currentlyLoaded = totalToShow;
@@ -251,24 +275,23 @@
       };
 
       function scrollToNewContent(previousCount) {
-        // This function is no longer needed since we're doing direct scrolling
+        // This function is no longer needed since we're doing direct approach
         console.log('scrollToNewContent called but using direct approach instead');
       }
 
       function openOverlay(video) {
-        overlayVideo.src = video.src;
-        overlayImage.src = video.cardImage || '';
+        overlayVideo.src = video.movie;
+        overlayImage.src = video.image || '';
         overlayImage.alt = video.name || 'Character Card';
         overlayName.textContent = video.name || 'Name Surname';
         
-        // Parse info and create initial structure with 0 values
-        const infoData = video.info.map(p => {
-          const [label, value] = p.split(':');
-          return {
-            label: label.trim(),
-            value: parseInt(value.trim()) || 0
-          };
-        });
+        // Create info structure with the new simplified properties
+        const infoData = [
+          { label: 'Performance', value: parseInt(video.performance) || 0 },
+          { label: 'Style', value: parseInt(video.style) || 0 },
+          { label: 'Fun', value: parseInt(video.Fun) || 0 },
+          { label: 'Technique', value: parseInt(video.technique) || 0 }
+        ];
         
         // Set initial HTML with 0 values
         overlayInfo.innerHTML = infoData.map((item, index) => {
