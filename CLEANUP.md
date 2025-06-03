@@ -18,6 +18,9 @@
 ### Assets
 - `mockup.png` - Large design mockup file (5.1MB saved)
 
+### Auto-Update Overhead
+- `data-updated.signal` - Removed (static mode doesn't need polling)
+
 ## Current Clean Structure 🎯
 
 ```
@@ -25,8 +28,9 @@
 ├── 📄 index.html              # Main gallery viewer
 ├── 📄 styles.css              # Styling
 ├── 📊 data.json              # Video metadata
-├── 🔧 data-tracker.js        # File change monitor
-├── 🚀 start-data-gallery.sh  # System startup
+├── 🔧 data-tracker.js        # File change monitor (auto-update mode only)
+├── 🚀 start-static-gallery.sh # Static startup (default)
+├── 🚀 start-data-gallery.sh  # Auto-update startup
 ├── 🚀 restart-data-gallery.sh # System restart
 ├── 🔍 check-status.sh        # Status checker
 ├── 📦 package.json           # Dependencies
@@ -35,21 +39,41 @@
 └── 📄 README.md             # Documentation
 ```
 
+## Gallery Modes 🎛️
+
+### 🏠 Static Mode (Default)
+- **Resource Usage**: Low (HTTP server only)
+- **Background Processes**: None
+- **Network Requests**: Page load only
+- **Update Method**: Manual browser refresh
+- **Best For**: Stable video collections
+
+### 🔄 Auto-Update Mode (Optional)
+- **Resource Usage**: Higher (+ file watcher)
+- **Background Processes**: Data tracker
+- **Network Requests**: Polls every 2 seconds
+- **Update Method**: Automatic refresh
+- **Best For**: Frequently changing content
+
 ## Benefits 🎉
 
-1. **Simplified Architecture**: Single system instead of two competing ones
+1. **Simplified Architecture**: Static-first approach with optional auto-updates
 2. **Space Saved**: ~5MB+ from removing large mockup file
-3. **Cleaner Code**: Removed redundant trackers and scripts
-4. **Better Maintenance**: One clear data flow (data.json → gallery)
-5. **Focused Purpose**: Curated video collections with local file management
+3. **No Polling Overhead**: Static mode eliminates constant signal file requests
+4. **Lower Resource Usage**: Default mode only runs HTTP server
+5. **Flexible**: Choose static or auto-update based on your needs
+6. **Better Performance**: No background processes by default
 
 ## Commands Available 🚀
 
 ```bash
-npm start              # Start the gallery
-npm run status         # Check system health
-npm restart            # Restart if needed
-npm run dev            # Development mode
+# Gallery modes
+npm start              # Static gallery (default)
+npm run start-auto     # Auto-update gallery
+
+# System management
+npm run status         # Check current mode and health
+npm restart            # Restart auto-update system
 ```
 
-**System Status**: ✅ All services running normally after cleanup 
+**Current Status**: ✅ Running in Static Mode - No background processes, no polling overhead! 

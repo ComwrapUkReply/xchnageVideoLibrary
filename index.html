@@ -67,14 +67,18 @@
         .then(videos => {
           console.log(`Loaded ${videos.length} videos from JSON`);
           
-          // Add timestamps for sorting (use file creation time or current time)
+          // Generate timestamps: items at TOP of data.json get NEWEST timestamps
+          const now = Date.now();
           allVideos = videos.map((video, index) => ({
             ...video,
-            timestamp: video.timestamp || new Date(Date.now() - (videos.length - index) * 60000).toISOString()
+            // If no timestamp exists, generate one: first item gets newest time
+            timestamp: video.timestamp || new Date(now - (index * 5 * 60 * 1000)).toISOString() // 5 minutes apart
           })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
           
-          console.log(`Sorted videos by timestamp. Newest: ${allVideos[0].name} (${allVideos[0].timestamp})`);
-          console.log(`Oldest: ${allVideos[allVideos.length - 1].name} (${allVideos[allVideos.length - 1].timestamp})`);
+          console.log(`📊 Video order (newest first):`);
+          allVideos.slice(0, 5).forEach((video, i) => {
+            console.log(`   ${i + 1}. ${video.name} - ${new Date(video.timestamp).toLocaleString()}`);
+          });
           
           loadVideos(initialLoad);
           updateLoadMoreButton();

@@ -9,6 +9,7 @@
     "start-auto": "./start-data-gallery.sh",
     "restart": "./restart-data-gallery.sh",
     "status": "./check-status.sh",
+    "add-video": "node add-video.js",
     "data-tracker": "node data-tracker.js",
     "serve": "python3 -m http.server 8080",
     "dev": "concurrently \"npm run data-tracker\" \"npm run serve\""
