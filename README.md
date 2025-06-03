@@ -6,35 +6,35 @@ This project provides a video gallery that loads content from a curated `data.js
 
 The **Data Gallery System** (`index.html`) offers two modes:
 
-### 🏠 Static Mode (Default)
+### 🔄 Auto-Update Mode (Default)
+- **Live updates**: Automatically refreshes when data.json changes
+- **Background tracker**: Monitors file changes
+- **Instant updates**: No manual refresh needed when adding new videos
+- **Real-time**: Polls every 2 seconds for changes
+
+### 🏠 Static Mode (Optional)
 - **Simple**: Just serves your video collection
 - **No polling**: No constant requests or background processes
 - **Low resource**: Only HTTP server running
 - **Manual refresh**: Reload browser page to see changes
 
-### 🔄 Auto-Update Mode (Optional)
-- **Live updates**: Automatically refreshes when data.json changes
-- **Background tracker**: Monitors file changes
-- **Higher resource usage**: Additional polling processes
-- **Instant updates**: No manual refresh needed
-
 ## Quick Start
 
-### Static Gallery (Recommended)
+### Auto-Update Gallery (Default)
 ```bash
 # Install dependencies
 npm install
 
-# Start static gallery
+# Start auto-update gallery
 npm start
 
 # Open browser to: http://localhost:8080/index.html
 ```
 
-### Auto-Update Gallery (If Needed)
+### Static Gallery (If Preferred)
 ```bash
-# Start with auto-updates
-npm run start-auto
+# Start static gallery (no auto-updates)
+npm run start-static
 
 # Open browser to: http://localhost:8080/index.html
 ```
@@ -92,27 +92,38 @@ npm run start-auto
 ## Usage
 
 ### Adding Videos to Gallery
-1. Place video and image files in the `LINKS/` folder
-2. Edit `data.json` to add metadata:
-```json
-{
-  "movie": "https://remote-url.com/video.mp4",
-  "local_movie": "/absolute/path/LINKS/filename.mp4",
-  "name": "New Character",
-  "image": "https://remote-url.com/image.jpg", 
-  "local_image": "/absolute/path/LINKS/filename.png",
-  "info": {
-    "performance": "95",
-    "style": "88", 
-    "Fun": "92",
-    "technique": "89"
-  }
-}
-```
-3. **Static Mode**: Refresh your browser
-4. **Auto-Update Mode**: Gallery updates automatically
 
-**Note**: The system extracts filenames from `local_movie` and `local_image` paths and looks for them in the `LINKS/` folder.
+1. **Place files** in the `LINKS/` folder
+2. **Add entry to TOP** of `data.json` array (this ensures it appears first in gallery):
+
+```json
+[
+  {
+    "movie": "https://remote-url.com/video.mp4",
+    "local_movie": "/absolute/path/LINKS/filename.mp4",
+    "name": "New Character", 
+    "image": "https://remote-url.com/image.jpg",
+    "local_image": "/absolute/path/LINKS/filename.png",
+    "info": {
+      "performance": "95",
+      "style": "88",
+      "Fun": "92", 
+      "technique": "89"
+    }
+  },
+  // ... existing videos below
+]
+```
+
+3. **Gallery updates automatically** → New video appears at the top instantly! 🚀
+
+### Automatic Timestamps 📅
+
+- **Videos at TOP** of `data.json` get the **NEWEST** timestamps
+- **Automatic spacing**: 5 minutes apart for proper sorting
+- **Gallery sorts by timestamp**: Newest first (top of JSON → top of gallery)
+- **No manual timestamps needed**: System generates them automatically
+- **Auto-refresh**: Gallery updates within 2 seconds of file changes
 
 ## Available Commands
 
@@ -120,10 +131,10 @@ npm run start-auto
 # Install dependencies
 npm install
 
-# Gallery modes
-npm start              # Static gallery (default)
-npm run start-static   # Static gallery (explicit)
-npm run start-auto     # Auto-update gallery
+# Gallery modes  
+npm start              # Auto-update gallery (default)
+npm run start-auto     # Auto-update gallery (explicit)
+npm run start-static   # Static gallery (no auto-updates)
 
 # System management
 npm run status         # Check system status
@@ -136,13 +147,14 @@ npm run dev            # Auto-update with development tools
 
 ## Mode Comparison
 
-| Feature | Static Mode | Auto-Update Mode |
-|---------|-------------|------------------|
-| **Resource Usage** | Low (HTTP only) | Higher (+ file watcher) |
-| **Background Processes** | None | Data tracker |
-| **Update Method** | Manual refresh | Automatic |
-| **Network Requests** | Page load only | Continuous polling |
-| **Best For** | Stable collections | Frequently changing content |
+| Feature | Auto-Update Mode | Static Mode |
+|---------|------------------|-------------|
+| **Resource Usage** | Higher (+ file watcher) | Low (HTTP only) |
+| **Background Processes** | Data tracker | None |
+| **Update Method** | Automatic (2 seconds) | Manual refresh |
+| **Network Requests** | Continuous polling | Page load only |
+| **Best For** | Active development | Stable collections |
+| **Default** | ✅ Yes | No |
 
 ## Configuration
 

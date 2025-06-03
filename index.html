@@ -42,6 +42,7 @@
       const initialLoad = 16;
       const loadMore = 16;
       let isLoading = false;
+      let lastSignalTimestamp = '';
 
       // Utility function to get human-readable time ago with hours and minutes
       function getTimeAgo(date) {
@@ -61,27 +62,85 @@
         return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
       }
 
-      // Load data.json once on page load
+      // Auto-update functionality
+      function checkForUpdates() {
+        fetch('data-updated.signal?' + Date.now())
+          .then(response => {
+            if (response.ok) {
+              return response.text();
+            }
+            throw new Error('Signal file not found');
+          })
+          .then(timestamp => {
+            if (lastSignalTimestamp && timestamp !== lastSignalTimestamp) {
+              console.log('🔄 Data change detected, reloading gallery...');
+              reloadGallery();
+            }
+            lastSignalTimestamp = timestamp;
+          })
+          .catch(error => {
+            // Signal file might not exist in static mode - that's okay
+            console.log('ℹ️  No signal file (static mode)');
+          });
+      }
+
+      function reloadGallery() {
+        console.log('🔄 Reloading gallery data...');
+        
+        // Clear current gallery
+        gallery.innerHTML = '';
+        currentlyLoaded = 0;
+        
+        // Reload data
+        fetch('data.json?' + Date.now())
+          .then(response => response.json())
+          .then(videos => {
+            console.log(`🔄 Reloaded ${videos.length} videos from JSON`);
+            
+            // Generate timestamps: items at TOP of data.json get NEWEST timestamps
+            const now = Date.now();
+            allVideos = videos.map((video, index) => ({
+              ...video,
+              timestamp: video.timestamp || new Date(now - (index * 5 * 60 * 1000)).toISOString()
+            })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            console.log('🆕 Updated gallery with new data');
+            
+            loadVideos(initialLoad);
+            updateLoadMoreButton();
+          })
+          .catch(error => console.error('Failed to reload JSON:', error));
+      }
+
+      // Start auto-update polling (every 2 seconds)
+      setInterval(checkForUpdates, 2000);
+      console.log('🔄 Auto-update polling started (every 2 seconds)');
+
+      // Load data.json initially on page load
       fetch('data.json')
         .then(response => response.json())
         .then(videos => {
-          console.log(`Loaded ${videos.length} videos from JSON`);
+          console.log(`✅ Initial load: ${videos.length} videos from JSON`);
           
           // Generate timestamps: items at TOP of data.json get NEWEST timestamps
           const now = Date.now();
           allVideos = videos.map((video, index) => ({
             ...video,
-            // If no timestamp exists, generate one: first item gets newest time
-            timestamp: video.timestamp || new Date(now - (index * 5 * 60 * 1000)).toISOString() // 5 minutes apart
+            timestamp: video.timestamp || new Date(now - (index * 5 * 60 * 1000)).toISOString()
           })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
           
           console.log(`📊 Video order (newest first):`);
-          allVideos.slice(0, 5).forEach((video, i) => {
+          allVideos.slice(0, 3).forEach((video, i) => {
             console.log(`   ${i + 1}. ${video.name} - ${new Date(video.timestamp).toLocaleString()}`);
           });
           
           loadVideos(initialLoad);
           updateLoadMoreButton();
+          
+          // Start checking for updates after initial load
+          setTimeout(() => {
+            checkForUpdates(); // Get initial signal timestamp
+          }, 1000);
         })
         .catch(error => console.error('Failed to load JSON:', error));
 

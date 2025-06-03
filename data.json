@@ -1,5 +1,17 @@
 [
   {
+    "name": "🆕 NEW VIDEO TEST (auto-refresh)",
+    "local_movie": "/test/path.mp4",
+    "local_image": "/test/image.png",
+    "info": {
+      "performance": "99",
+      "style": "95",
+      "Fun": "98",
+      "technique": "92"
+    },
+    "timestamp": "2025-06-03T13:20:54.307Z"
+  },
+  {
     "movie": "https://replicate.delivery/xezq/ojaegshdlF17MqgfvYrwb3526tfskopibVeGf1tyIwMBa5YmC/tmp5d8f6lln.mp4",
     "local_movie": "/Users/Richard/Desktop/webhook-summit/Xchange/JSON/LINKS/Richard millington_20250603-103101.mp4",
     "name": "Richard millington",
