@@ -4,7 +4,9 @@
   "description": "Auto-updating video gallery with data.json file watcher",
   "main": "data-tracker.js",
   "scripts": {
-    "start": "./start-data-gallery.sh",
+    "start": "./start-static-gallery.sh",
+    "start-static": "./start-static-gallery.sh",
+    "start-auto": "./start-data-gallery.sh",
     "restart": "./restart-data-gallery.sh",
     "status": "./check-status.sh",
     "data-tracker": "node data-tracker.js",

@@ -39,8 +39,8 @@
 
       let allVideos = [];
       let currentlyLoaded = 0;
-      const initialLoad = 4;
-      const loadMore = 4;
+      const initialLoad = 16;
+      const loadMore = 16;
       let isLoading = false;
 
       // Utility function to get human-readable time ago with hours and minutes
@@ -61,53 +61,7 @@
         return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
       }
 
-      let lastUpdateTime = null;
-
-      // Check for updates to data.json
-      function checkForUpdates() {
-        fetch('./data-updated.signal?' + Date.now())
-          .then(response => response.text())
-          .then(updateTime => {
-            if (lastUpdateTime && updateTime !== lastUpdateTime) {
-              console.log('🔄 Videos updated detected, refreshing...');
-              reloadVideos();
-            }
-            lastUpdateTime = updateTime;
-          })
-          .catch(error => {
-            // Signal file doesn't exist yet, that's okay
-          });
-      }
-
-      // Reload videos from JSON
-      function reloadVideos() {
-        fetch('data.json?' + Date.now()) // Cache busting
-          .then(response => response.json())
-          .then(videos => {
-            console.log(`🔄 Reloaded ${videos.length} videos from JSON`);
-            
-            // Add timestamps for sorting (use file creation time or current time)
-            allVideos = videos.map((video, index) => ({
-              ...video,
-              timestamp: video.timestamp || new Date(Date.now() - (videos.length - index) * 60000).toISOString()
-            })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            
-            // Clear gallery and reset counters
-            gallery.innerHTML = '';
-            currentlyLoaded = 0;
-            
-            // Load initial videos
-            loadVideos(initialLoad);
-            updateLoadMoreButton();
-            
-            console.log(`✅ Gallery refreshed with ${currentlyLoaded} videos`);
-          })
-          .catch(error => console.error('Failed to reload videos:', error));
-      }
-
-      // Start periodic update checking
-      setInterval(checkForUpdates, 2000); // Check every 2 seconds
-
+      // Load data.json once on page load
       fetch('data.json')
         .then(response => response.json())
         .then(videos => {

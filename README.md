@@ -1,23 +1,40 @@
 # Data Gallery System
 
-This project provides an auto-updating video gallery that loads content from a curated `data.json` file with local video and image files.
+This project provides a video gallery that loads content from a curated `data.json` file with local video and image files. It supports both **static** and **auto-update** modes.
 
 ## System Overview
 
-The **Data Gallery System** (`index.html`) uses:
-- **Data Source**: `data.json` - Static JSON file with video metadata
-- **Local Files**: `LINKS/` folder containing video and image files  
-- **Tracker**: `data-tracker.js` - Monitors `data.json` for changes
-- **Perfect for**: Pre-defined video collections with metadata and local file management
+The **Data Gallery System** (`index.html`) offers two modes:
+
+### 🏠 Static Mode (Default)
+- **Simple**: Just serves your video collection
+- **No polling**: No constant requests or background processes
+- **Low resource**: Only HTTP server running
+- **Manual refresh**: Reload browser page to see changes
+
+### 🔄 Auto-Update Mode (Optional)
+- **Live updates**: Automatically refreshes when data.json changes
+- **Background tracker**: Monitors file changes
+- **Higher resource usage**: Additional polling processes
+- **Instant updates**: No manual refresh needed
 
 ## Quick Start
 
+### Static Gallery (Recommended)
 ```bash
 # Install dependencies
 npm install
 
-# Start the data gallery system
+# Start static gallery
 npm start
+
+# Open browser to: http://localhost:8080/index.html
+```
+
+### Auto-Update Gallery (If Needed)
+```bash
+# Start with auto-updates
+npm run start-auto
 
 # Open browser to: http://localhost:8080/index.html
 ```
@@ -47,7 +64,6 @@ npm start
 
 ## Features
 
-- ✅ **Auto-refresh**: Page updates automatically when data.json changes
 - ✅ **Responsive Design**: Works on mobile, tablet, and desktop
 - ✅ **Video Thumbnails**: Auto-playing video previews
 - ✅ **Modal Overlay**: Full-screen video player with character stats
@@ -56,6 +72,7 @@ npm start
 - ✅ **Load More**: Button-based pagination for large collections
 - 📊 **Local File Priority**: Uses local LINKS files over remote URLs
 - 🎯 **Curated Collections**: Full control over video metadata
+- ⚡ **Static Mode**: No background processes or polling
 
 ## File Structure
 
@@ -92,7 +109,8 @@ npm start
   }
 }
 ```
-3. Gallery updates automatically!
+3. **Static Mode**: Refresh your browser
+4. **Auto-Update Mode**: Gallery updates automatically
 
 **Note**: The system extracts filenames from `local_movie` and `local_image` paths and looks for them in the `LINKS/` folder.
 
@@ -102,18 +120,29 @@ npm start
 # Install dependencies
 npm install
 
-# Start systems
-npm start           # Data gallery system
-npm restart         # Restart data gallery system
-npm status          # Check system status
+# Gallery modes
+npm start              # Static gallery (default)
+npm run start-static   # Static gallery (explicit)
+npm run start-auto     # Auto-update gallery
+
+# System management
+npm run status         # Check system status
+npm restart            # Restart auto-update system
+npm run serve          # HTTP server only
 
 # Development
-npm run dev         # Data gallery with auto-restart
-
-# Individual components
-npm run data-tracker    # Start data tracker only
-npm run serve          # Start HTTP server only
+npm run dev            # Auto-update with development tools
 ```
+
+## Mode Comparison
+
+| Feature | Static Mode | Auto-Update Mode |
+|---------|-------------|------------------|
+| **Resource Usage** | Low (HTTP only) | Higher (+ file watcher) |
+| **Background Processes** | None | Data tracker |
+| **Update Method** | Manual refresh | Automatic |
+| **Network Requests** | Page load only | Continuous polling |
+| **Best For** | Stable collections | Frequently changing content |
 
 ## Configuration
 
@@ -127,14 +156,10 @@ npm run serve          # Start HTTP server only
 - **Load More**: 16 videos per click
 - **Auto-scroll**: Smooth scroll to new content
 
-### Update Intervals
-- **Data Tracker**: Monitors file changes in real-time
-- **Browser Update**: Checks for changes every 2 seconds
-
 ## Troubleshooting
 
-### Gallery Not Updating
-1. Check if tracker is running: `npm status`
+### Gallery Not Loading
+1. Check system status: `npm run status`
 2. Verify JSON file format with online validator
 3. Check browser console for errors
 
@@ -144,9 +169,9 @@ npm run serve          # Start HTTP server only
 3. Ensure HTTP server is running on port 8080
 
 ### Performance Issues
-1. Reduce `initialLoad` and `loadMore` values in index.html
-2. Optimize video file sizes
-3. Use lower resolution for thumbnail previews
+1. Use static mode instead of auto-update
+2. Reduce `initialLoad` and `loadMore` values in index.html
+3. Optimize video file sizes
 
 ## Browser Support
 
