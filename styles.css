@@ -296,8 +296,8 @@ html, body {
 }
 
 #loadMoreBtn {
-  background: linear-gradient(135deg, #FFD700, #1e3c72);
-  color: white;
+  background: transparent;
+  color: black;
   border: none;
   border-radius: 50%;
   width: 60px;
@@ -305,7 +305,6 @@ html, body {
   font-size: 32px;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
   transition: all 0.3s ease;
   animation: bounce 2s infinite;
   display: flex;
@@ -314,10 +313,6 @@ html, body {
   position: relative;
 }
 
-#loadMoreBtn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 25px rgba(255, 215, 0, 0.6);
-}
 
 /* CSS-based arrow as backup */
 #loadMoreBtn::after {
@@ -325,13 +320,17 @@ html, body {
   position: absolute;
   width: 0;
   height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 12px solid white;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-top: 40px solid #e02746;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
+}
+
+#loadMoreBtn:hover::after {
+  border-top-color:  rgba(255, 215, 0, 1);
 }
 
 @keyframes bounce {

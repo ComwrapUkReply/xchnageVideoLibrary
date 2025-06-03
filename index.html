@@ -39,8 +39,8 @@
 
       let allVideos = [];
       let currentlyLoaded = 0;
-      const initialLoad = 16;
-      const loadMore = 16;
+      const initialLoad = 4;
+      const loadMore = 4;
       let isLoading = false;
 
       // Utility function to get human-readable time ago with hours and minutes
@@ -177,7 +177,7 @@
           loadMoreContainer.style.display = 'flex';
           const remaining = allVideos.length - currentlyLoaded;
           const nextLoad = Math.min(loadMore, remaining);
-          loadMoreBtn.textContent = `Load ${nextLoad} More Videos (${remaining} remaining)`;
+          loadMoreBtn.textContent = ``;
           console.log(`Button updated: ${nextLoad} more videos, ${remaining} remaining`);
         }
       }
