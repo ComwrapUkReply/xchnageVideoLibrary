@@ -63,9 +63,9 @@
 
       let lastUpdateTime = null;
 
-      // Check for updates to videos.json
+      // Check for updates to data.json
       function checkForUpdates() {
-        fetch('./videos-updated.signal?' + Date.now())
+        fetch('./data-updated.signal?' + Date.now())
           .then(response => response.text())
           .then(updateTime => {
             if (lastUpdateTime && updateTime !== lastUpdateTime) {
@@ -81,13 +81,16 @@
 
       // Reload videos from JSON
       function reloadVideos() {
-        fetch('videos.json?' + Date.now()) // Cache busting
+        fetch('data.json?' + Date.now()) // Cache busting
           .then(response => response.json())
           .then(videos => {
             console.log(`🔄 Reloaded ${videos.length} videos from JSON`);
             
-            // Sort videos by timestamp (newest first)
-            allVideos = videos.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            // Add timestamps for sorting (use file creation time or current time)
+            allVideos = videos.map((video, index) => ({
+              ...video,
+              timestamp: video.timestamp || new Date(Date.now() - (videos.length - index) * 60000).toISOString()
+            })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
             
             // Clear gallery and reset counters
             gallery.innerHTML = '';
@@ -105,13 +108,17 @@
       // Start periodic update checking
       setInterval(checkForUpdates, 2000); // Check every 2 seconds
 
-      fetch('videos.json')
+      fetch('data.json')
         .then(response => response.json())
         .then(videos => {
           console.log(`Loaded ${videos.length} videos from JSON`);
           
-          // Sort videos by timestamp (newest first)
-          allVideos = videos.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+          // Add timestamps for sorting (use file creation time or current time)
+          allVideos = videos.map((video, index) => ({
+            ...video,
+            timestamp: video.timestamp || new Date(Date.now() - (videos.length - index) * 60000).toISOString()
+          })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+          
           console.log(`Sorted videos by timestamp. Newest: ${allVideos[0].name} (${allVideos[0].timestamp})`);
           console.log(`Oldest: ${allVideos[allVideos.length - 1].name} (${allVideos[allVideos.length - 1].timestamp})`);
           
@@ -126,7 +133,7 @@
         const totalToShow = Math.min(currentlyLoaded + count, allVideos.length);
         
         console.log(`Videos to load: ${videosToLoad.length}, total to show: ${totalToShow}`);
-        console.log('Video sources being loaded:', videosToLoad.map(v => v.src));
+        console.log('Video sources being loaded:', videosToLoad.map(v => getVideoPath(v)));
         
         videosToLoad.forEach((video, index) => {
           const tile = document.createElement('div');
@@ -135,14 +142,16 @@
           const date = new Date(video.timestamp);
           const timeAgo = getTimeAgo(date);
           
+          const videoPath = getVideoPath(video);
+          
           tile.innerHTML = `
-            <video src="${video.src}" autoplay muted loop></video>
+            <video src="${videoPath}" autoplay muted loop></video>
             <div class="timestamp-overlay">${timeAgo}</div>
             <div class="video-title">${video.name}</div>
           `;
           tile.onclick = () => openOverlay(video);
           gallery.appendChild(tile);
-          console.log(`Added video ${currentlyLoaded + index + 1}: ${video.name} (${video.src}) - ${timeAgo}`);
+          console.log(`Added video ${currentlyLoaded + index + 1}: ${video.name} (${videoPath}) - ${timeAgo}`);
         });
 
         currentlyLoaded = totalToShow;
@@ -256,19 +265,34 @@
       }
 
       function openOverlay(video) {
-        overlayVideo.src = video.src;
-        overlayImage.src = video.cardImage || '';
+        const videoPath = getVideoPath(video);
+        const imagePath = getImagePath(video);
+        
+        overlayVideo.src = videoPath;
+        overlayImage.src = imagePath;
         overlayImage.alt = video.name || 'Character Card';
         overlayName.textContent = video.name || 'Name Surname';
         
-        // Parse info and create initial structure with 0 values
-        const infoData = video.info.map(p => {
-          const [label, value] = p.split(':');
-          return {
-            label: label.trim(),
-            value: parseInt(value.trim()) || 0
-          };
-        });
+        // Handle new info structure - it's an object now, not an array
+        let infoData = [];
+        if (video.info && typeof video.info === 'object') {
+          // Convert object to array format for display
+          infoData = [
+            { label: 'Performance', value: parseInt(video.info.performance) || 0 },
+            { label: 'Style', value: parseInt(video.info.style) || 0 },
+            { label: 'Fun', value: parseInt(video.info.Fun) || 0 },
+            { label: 'Technique', value: parseInt(video.info.technique) || 0 }
+          ];
+        } else if (Array.isArray(video.info)) {
+          // Handle old array format for backwards compatibility
+          infoData = video.info.map(p => {
+            const [label, value] = p.split(':');
+            return {
+              label: label.trim(),
+              value: parseInt(value.trim()) || 0
+            };
+          });
+        }
         
         // Set initial HTML with 0 values
         overlayInfo.innerHTML = infoData.map((item, index) => {
@@ -330,6 +354,26 @@
             }, 16);
           }, startDelay);
         });
+      }
+
+      // Helper function to get video path - prefer local over remote
+      function getVideoPath(video) {
+        if (video.local_movie) {
+          // Extract filename from local path and use LINKS folder
+          const filename = video.local_movie.split('/').pop();
+          return `LINKS/${filename}`;
+        }
+        return video.movie || video.src || '';
+      }
+
+      // Helper function to get image path - prefer local over remote
+      function getImagePath(video) {
+        if (video.local_image) {
+          // Extract filename from local path and use LINKS folder
+          const filename = video.local_image.split('/').pop();
+          return `LINKS/${filename}`;
+        }
+        return video.image || video.cardImage || '';
       }
 
       window.closeOverlay = function () {
